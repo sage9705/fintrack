@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using FinTrack.Services;
 using FinTrack.ViewModels;
+using FinTrack.Views;
 
 namespace FinTrack;
 
@@ -19,6 +20,7 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<ITransactionService, MockTransactionService>();
         builder.Services.AddTransient<TransactionsViewModel>();
+        builder.Services.AddTransient<TransactionsPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();
