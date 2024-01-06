@@ -1,10 +1,12 @@
-﻿namespace FinTrack
+﻿using FinTrack.Views;
+
+namespace FinTrack;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell()
     {
-        public AppShell()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+        Routing.RegisterRoute("AddTransaction", typeof(AddTransactionPage));
     }
 }
