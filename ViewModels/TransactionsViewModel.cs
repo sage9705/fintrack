@@ -4,6 +4,7 @@ using FinTrack.Models;
 using FinTrack.Services;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
 
 namespace FinTrack.ViewModels
 {
@@ -29,6 +30,12 @@ namespace FinTrack.ViewModels
             {
                 Transactions.Add(transaction);
             }
+        }
+
+        [RelayCommand]
+        private async Task NavigateToAddTransactionAsync()
+        {
+            await Shell.Current.GoToAsync("AddTransaction");
         }
     }
 }
