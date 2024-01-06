@@ -7,6 +7,6 @@ namespace FinTrack.Services
     public interface ITransactionService
     {
         Task<List<Transaction>> GetTransactionsAsync();
-        Task AddTransactionAsync(Transaction transaction);
+        Task<Transaction> AddTransactionAsync(Transaction transaction);
     }
 }

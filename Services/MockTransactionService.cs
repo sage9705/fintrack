@@ -21,11 +21,11 @@ namespace FinTrack.Services
             return await Task.FromResult(_transactions);
         }
 
-        public async Task AddTransactionAsync(Transaction transaction)
+        public async Task<Transaction> AddTransactionAsync(Transaction transaction)
         {
             transaction.Id = _transactions.Count + 1;
             _transactions.Add(transaction);
-            await Task.CompletedTask;
+            return await Task.FromResult(transaction);
         }
     }
 }
