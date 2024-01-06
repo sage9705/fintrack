@@ -21,6 +21,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<ITransactionService, MockTransactionService>();
         builder.Services.AddTransient<TransactionsViewModel>();
         builder.Services.AddTransient<TransactionsPage>();
+        builder.Services.AddTransient<AddTransactionViewModel>();
+        builder.Services.AddTransient<AddTransactionPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();
