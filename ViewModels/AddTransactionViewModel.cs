@@ -4,9 +4,11 @@ using FinTrack.Models;
 using FinTrack.Services;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
 
 namespace FinTrack.ViewModels
 {
+    [QueryProperty(nameof(TransactionsViewModel), "TransactionsViewModel")]
     public partial class AddTransactionViewModel : ObservableObject
     {
         private readonly ITransactionService _transactionService;
@@ -22,6 +24,9 @@ namespace FinTrack.ViewModels
 
         [ObservableProperty]
         private bool isIncome;
+
+        [ObservableProperty]
+        private TransactionsViewModel transactionsViewModel;
 
         public AddTransactionViewModel(ITransactionService transactionService)
         {
@@ -47,7 +52,11 @@ namespace FinTrack.ViewModels
             Date = DateTime.Now;
             IsIncome = false;
 
-            // You might want to navigate back to the transactions list or show a success message here
+            // Refresh the transactions list
+            await TransactionsViewModel.RefreshTransactions();
+
+            // Navigate back to the transactions list
+            await Shell.Current.GoToAsync("..");
         }
     }
 }

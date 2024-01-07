@@ -22,7 +22,7 @@ namespace FinTrack.ViewModels
         }
 
         [RelayCommand]
-        private async Task LoadTransactionsAsync()
+        public async Task LoadTransactionsAsync()
         {
             var loadedTransactions = await _transactionService.GetTransactionsAsync();
             Transactions.Clear();
@@ -36,6 +36,11 @@ namespace FinTrack.ViewModels
         private async Task NavigateToAddTransactionAsync()
         {
             await Shell.Current.GoToAsync("AddTransaction");
+        }
+
+        public async Task RefreshTransactions()
+        {
+            await LoadTransactionsAsync();
         }
     }
 }
