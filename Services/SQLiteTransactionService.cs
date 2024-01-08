@@ -18,6 +18,11 @@ namespace FinTrack.Services
             return await _context.GetTransactionsAsync();
         }
 
+        public async Task<Transaction> GetTransactionAsync(int id)
+        {
+            return await _context.GetTransactionAsync(id);
+        }
+
         public async Task<Transaction> AddTransactionAsync(Transaction transaction)
         {
             await _context.SaveTransactionAsync(transaction);
