@@ -8,5 +8,6 @@ public partial class AppShell : Shell
     {
         InitializeComponent();
         Routing.RegisterRoute("AddTransaction", typeof(AddTransactionPage));
+        Routing.RegisterRoute("EditTransaction", typeof(EditTransactionPage));
     }
 }

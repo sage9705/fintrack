@@ -8,5 +8,7 @@ namespace FinTrack.Services
     {
         Task<List<Transaction>> GetTransactionsAsync();
         Task<Transaction> AddTransactionAsync(Transaction transaction);
+        Task<Transaction> UpdateTransactionAsync(Transaction transaction);
+        Task DeleteTransactionAsync(int id);
     }
 }

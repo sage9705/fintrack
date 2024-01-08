@@ -38,6 +38,12 @@ namespace FinTrack.ViewModels
             await Shell.Current.GoToAsync("AddTransaction");
         }
 
+        [RelayCommand]
+        private async Task NavigateToEditTransactionAsync(Transaction transaction)
+        {
+            await Shell.Current.GoToAsync($"EditTransaction?id={transaction.Id}");
+        }
+
         public async Task RefreshTransactions()
         {
             await LoadTransactionsAsync();
