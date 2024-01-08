@@ -52,8 +52,11 @@ namespace FinTrack.ViewModels
             Date = DateTime.Now;
             IsIncome = false;
 
-            // Refresh the transactions list
-            await TransactionsViewModel.RefreshTransactions();
+            // Refresh the transactions list if TransactionsViewModel is available
+            if (TransactionsViewModel != null)
+            {
+                await TransactionsViewModel.RefreshTransactions();
+            }
 
             // Navigate back to the transactions list
             await Shell.Current.GoToAsync("..");

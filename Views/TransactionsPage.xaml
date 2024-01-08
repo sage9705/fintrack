@@ -18,6 +18,6 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <Button Text="Add Transaction" Command="{Binding NavigateToAddTransactionCommand}" Grid.Row="1" Margin="10" />
-    </Grid>
+		<Button Text="Add Transaction" Clicked="OnAddTransactionClicked" Grid.Row="1" Margin="10" />
+	</Grid>
 </ContentPage>
