@@ -14,6 +14,7 @@ namespace FinTrack.Services
             string dbPath = Path.Combine(FileSystem.AppDataDirectory, "fintrack.db3");
             _database = new SQLiteAsyncConnection(dbPath);
             _database.CreateTableAsync<Transaction>().Wait();
+            _database.CreateTableAsync<Category>().Wait();
         }
 
         public async Task<List<Transaction>> GetTransactionsAsync()
@@ -41,6 +42,33 @@ namespace FinTrack.Services
         public async Task<int> DeleteTransactionAsync(Transaction transaction)
         {
             return await _database.DeleteAsync(transaction);
+        }
+
+        public async Task<List<Category>> GetCategoriesAsync()
+        {
+            return await _database.Table<Category>().ToListAsync();
+        }
+
+        public async Task<Category> GetCategoryAsync(int id)
+        {
+            return await _database.Table<Category>().Where(i => i.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<int> SaveCategoryAsync(Category category)
+        {
+            if (category.Id != 0)
+            {
+                return await _database.UpdateAsync(category);
+            }
+            else
+            {
+                return await _database.InsertAsync(category);
+            }
+        }
+
+        public async Task<int> DeleteCategoryAsync(Category category)
+        {
+            return await _database.DeleteAsync(category);
         }
     }
 }

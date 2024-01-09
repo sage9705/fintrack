@@ -4,9 +4,14 @@
              xmlns:viewmodels="clr-namespace:FinTrack.ViewModels"
              x:Class="FinTrack.Views.TransactionsPage"
              Title="Transactions">
+	<Grid RowDefinitions="Auto,*,Auto">
+		<Picker Grid.Row="0"
+                ItemsSource="{Binding Categories}"
+                ItemDisplayBinding="{Binding Name}"
+                SelectedItem="{Binding SelectedCategory}"
+                Title="Select Category" />
 
-	<Grid RowDefinitions="*, Auto">
-		<RefreshView Grid.Row="0" Command="{Binding LoadTransactionsCommand}">
+		<RefreshView Grid.Row="1" Command="{Binding LoadTransactionsCommand}">
 			<CollectionView ItemsSource="{Binding Transactions}">
 				<CollectionView.ItemTemplate>
 					<DataTemplate>
@@ -47,7 +52,7 @@
 
 		<Button Text="Add Transaction"
                 Command="{Binding NavigateToAddTransactionCommand}"
-                Grid.Row="1"
+                Grid.Row="2"
                 Margin="10" />
 	</Grid>
 </ContentPage>

@@ -11,14 +11,23 @@ namespace FinTrack.ViewModels
     public partial class TransactionsViewModel : ObservableObject
     {
         private readonly ITransactionService _transactionService;
+        private readonly CategoryService _categoryService;
 
         [ObservableProperty]
         private ObservableCollection<Transaction> transactions;
 
-        public TransactionsViewModel(ITransactionService transactionService)
+        [ObservableProperty]
+        private ObservableCollection<Category> categories;
+
+        [ObservableProperty]
+        private Category selectedCategory;
+
+        public TransactionsViewModel(ITransactionService transactionService, CategoryService categoryService)
         {
             _transactionService = transactionService;
+            _categoryService = categoryService;
             Transactions = new ObservableCollection<Transaction>();
+            Categories = new ObservableCollection<Category>();
         }
 
         [RelayCommand]
@@ -28,8 +37,27 @@ namespace FinTrack.ViewModels
             Transactions.Clear();
             foreach (var transaction in loadedTransactions)
             {
-                Transactions.Add(transaction);
+                if (SelectedCategory == null || transaction.CategoryId == SelectedCategory.Id)
+                {
+                    Transactions.Add(transaction);
+                }
             }
+        }
+
+        [RelayCommand]
+        public async Task LoadCategoriesAsync()
+        {
+            var loadedCategories = await _categoryService.GetCategoriesAsync();
+            Categories.Clear();
+            foreach (var category in loadedCategories)
+            {
+                Categories.Add(category);
+            }
+        }
+
+        partial void OnSelectedCategoryChanged(Category value)
+        {
+            LoadTransactionsCommand.Execute(null);
         }
 
         [RelayCommand]
@@ -41,11 +69,17 @@ namespace FinTrack.ViewModels
         [RelayCommand]
         private async Task NavigateToEditTransactionAsync(Transaction transaction)
         {
-            await Shell.Current.GoToAsync($"EditTransaction?id={transaction.Id}");
+            var navigationParameter = new Dictionary<string, object>
+            {
+                { "TransactionId", transaction.Id }
+            };
+            await Shell.Current.GoToAsync("EditTransaction", navigationParameter);
         }
 
-        public async Task RefreshTransactions()
+        [RelayCommand]
+        private async Task DeleteTransactionAsync(int id)
         {
+            await _transactionService.DeleteTransactionAsync(id);
             await LoadTransactionsAsync();
         }
     }

@@ -16,7 +16,7 @@ namespace FinTrack.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            await _viewModel.LoadTransactionAsync();
+            await _viewModel.LoadDataAsync();
         }
     }
 }

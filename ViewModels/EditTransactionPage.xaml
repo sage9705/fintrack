@@ -4,6 +4,11 @@
              x:Class="FinTrack.Views.EditTransactionPage"
              Title="Edit Transaction">
     <StackLayout Padding="20">
+		<Picker ItemsSource="{Binding Categories}"
+        ItemDisplayBinding="{Binding Name}"
+        SelectedItem="{Binding SelectedCategory}"
+        Title="Select Category"
+		Margin="0,0,0,10" />
         <Entry Placeholder="Amount" Text="{Binding Amount}" Keyboard="Numeric" />
         <Entry Placeholder="Description" Text="{Binding Description}" />
         <DatePicker Date="{Binding Date}" />

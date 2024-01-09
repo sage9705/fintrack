@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using FinTrack.Models;
 using FinTrack.Services;
 using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Microsoft.Maui.Controls;
 
@@ -12,6 +13,7 @@ namespace FinTrack.ViewModels
     public partial class EditTransactionViewModel : ObservableObject
     {
         private readonly ITransactionService _transactionService;
+        private readonly CategoryService _categoryService;
 
         [ObservableProperty]
         private int transactionId;
@@ -28,33 +30,71 @@ namespace FinTrack.ViewModels
         [ObservableProperty]
         private bool isIncome;
 
-        public EditTransactionViewModel(ITransactionService transactionService)
+        [ObservableProperty]
+        private ObservableCollection<Category> categories;
+
+        [ObservableProperty]
+        private Category selectedCategory;
+
+        public EditTransactionViewModel(ITransactionService transactionService, CategoryService categoryService)
         {
             _transactionService = transactionService;
+            _categoryService = categoryService;
+            Categories = new ObservableCollection<Category>();
         }
 
-        public async Task LoadTransactionAsync()
+        [RelayCommand]
+        public async Task LoadDataAsync()
+        {
+            await LoadCategoriesAsync();
+            await LoadTransactionAsync();
+        }
+
+        private async Task LoadCategoriesAsync()
+        {
+            var loadedCategories = await _categoryService.GetCategoriesAsync();
+            Categories.Clear();
+            foreach (var category in loadedCategories)
+            {
+                Categories.Add(category);
+            }
+        }
+
+        private async Task LoadTransactionAsync()
         {
             var transaction = await _transactionService.GetTransactionAsync(TransactionId);
-            Amount = transaction.Amount;
-            Description = transaction.Description;
-            Date = transaction.Date;
-            IsIncome = transaction.IsIncome;
+            if (transaction != null)
+            {
+                Amount = transaction.Amount;
+                Description = transaction.Description;
+                Date = transaction.Date;
+                IsIncome = transaction.IsIncome;
+                SelectedCategory = Categories.FirstOrDefault(c => c.Id == transaction.CategoryId);
+            }
         }
 
         [RelayCommand]
         private async Task UpdateTransactionAsync()
         {
-            var transaction = new Transaction
+            if (SelectedCategory == null)
+            {
+                // Show an error message or handle the case where no category is selected
+                return;
+            }
+
+            var updatedTransaction = new Transaction
             {
                 Id = TransactionId,
                 Amount = Amount,
                 Description = Description,
                 Date = Date,
-                IsIncome = IsIncome
+                IsIncome = IsIncome,
+                CategoryId = SelectedCategory.Id
             };
 
-            await _transactionService.UpdateTransactionAsync(transaction);
+            await _transactionService.UpdateTransactionAsync(updatedTransaction);
+
+            // Navigate back to the transactions list
             await Shell.Current.GoToAsync("..");
         }
 
