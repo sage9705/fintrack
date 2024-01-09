@@ -7,9 +7,15 @@
     xmlns:views="clr-namespace:FinTrack.Views"
     Shell.FlyoutBehavior="Disabled">
 
-    <ShellContent
-        Title="Transactions"
-        ContentTemplate="{DataTemplate views:TransactionsPage}"
-        Route="Transactions" />
+    <TabBar>
+        <ShellContent
+            Title="Dashboard"
+            ContentTemplate="{DataTemplate views:DashboardPage}"
+            Route="Dashboard" />
+        <ShellContent
+            Title="Transactions"
+            ContentTemplate="{DataTemplate views:TransactionsPage}"
+            Route="Transactions" />
+    </TabBar>
 
 </Shell>
